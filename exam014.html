@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+   /* let score = prompt('점수를 입력하세요');
+    if(score >= 90){
+        alert('A 입니다.');
+    } 
+    else if(score >= 80) {
+        alert('B 입니다.');
+    } 
+    else if(score >= 70) {
+        alert('C 입니다.');
+    } 
+    else if(score >= 60) {
+        alert('D 입니다.');
+    } 
+    else {
+        alert('F 입니다.');
+    }
+    */
+   
+/*
+    let score = prompt('점수를 입력하세요');
+    
+    switch(parseInt(score/10)) {
+        case 10:   //case 조건문 중첩
+        case 9:
+            alert('A 입니다.');
+            break;
+        case 8:
+            alert('B 입니다');
+            break;
+        case 7:
+            alert('C 입니다');
+            break;
+        case 6:
+            alert('D 입니다');
+            break;
+        default:
+            alert('F 입니다')
+    }
+    switch(True) {
+        case number >= 90:
+            alert('A 입니다');
+            break;
+    }
+            */
+    
+
+</script>
+<body>
+    <h1>JS 조건문</h1>
+    <hr>
+    <h1>JS 반복문</h1>
+    <script>
+        /*
+        let num = 1;
+        while(num <= score) {
+            document.write(num + '<br>');
+            num++;
+        }
+        for( num = 1; num <= score; num++) {
+            document.write(num+'<br>');
+        }
+            */
+        let num = 0;
+        let sum = 0;
+        //while(num <= 100) {
+        for(num = 0; num<=100; num++) {
+
+            if(num % 2 !=0) continue; {
+                sum+=num;
+                num++;
+            }
+        }
+        document.write(sum);
+    
+    </script>
+</body>
+</html>
