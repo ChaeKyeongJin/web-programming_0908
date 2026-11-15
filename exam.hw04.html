@@ -50,8 +50,8 @@
 <body>
     <main id="calculator">
         <h1>공학용 계산기</h1>
-        <input id="display-expression" class="display" type="text" readonly aria-label="입력한 계산식">
-        <input id="display-result" class="display" type="text" readonly aria-label="계산 결과">
+        <input id="display-expression" class="display" type="text" aria-label="입력한 계산식">
+        <input id="display-result" class="display" type="text" aria-label="계산 결과">
         <div class="keys">
             <button type="button" data-value="sin(">sin</button>
             <button type="button" data-value="cos(">cos</button>
@@ -97,6 +97,25 @@
         const expressionDisplay = document.querySelector('#display-expression');
         const resultDisplay = document.querySelector('#display-result');
         const keys = document.querySelector('.keys');
+        let activeDisplay = resultDisplay;
+
+        function insertAtCursor(value) {
+            const start = activeDisplay.selectionStart ?? activeDisplay.value.length;
+            const end = activeDisplay.selectionEnd ?? start;
+            activeDisplay.value =
+                activeDisplay.value.slice(0, start) +
+                value +
+                activeDisplay.value.slice(end);
+            activeDisplay.focus();
+            const cursor = start + value.length;
+            activeDisplay.setSelectionRange(cursor, cursor);
+        }
+
+        [expressionDisplay, resultDisplay].forEach((display) => {
+            display.addEventListener('focus', () => {
+                activeDisplay = display;
+            });
+        });
 
         function factorial(value) {
             if (!Number.isInteger(value) || value < 0 || value > 170) {
@@ -243,23 +262,40 @@
             const action = button.dataset.action;
 
             if (value) {
-                resultDisplay.value += value;
+                insertAtCursor(value);
                 return;
             }
 
             if (action === 'clear') {
                 expressionDisplay.value = '';
                 resultDisplay.value = '';
+                activeDisplay = resultDisplay;
             } else if (action === 'backspace') {
-                resultDisplay.value = resultDisplay.value.slice(0, -1);
+                const start = activeDisplay.selectionStart ?? activeDisplay.value.length;
+                const end = activeDisplay.selectionEnd ?? start;
+                if (start !== end) {
+                    activeDisplay.value =
+                        activeDisplay.value.slice(0, start) +
+                        activeDisplay.value.slice(end);
+                    activeDisplay.setSelectionRange(start, start);
+                } else if (start > 0) {
+                    activeDisplay.value =
+                        activeDisplay.value.slice(0, start - 1) +
+                        activeDisplay.value.slice(start);
+                    activeDisplay.setSelectionRange(start - 1, start - 1);
+                }
+                activeDisplay.focus();
             } else if (action === 'calculate') {
+                const expression = activeDisplay.value;
+                expressionDisplay.value = expression;
                 try {
-                    const expression = resultDisplay.value;
-                    expressionDisplay.value = expression;
                     resultDisplay.value = String(calculate(expression));
                 } catch (error) {
                     resultDisplay.value = error.message;
                 }
+                activeDisplay = expressionDisplay;
+                expressionDisplay.focus();
+                expressionDisplay.setSelectionRange(expression.length, expression.length);
             }
         });
     </script>
