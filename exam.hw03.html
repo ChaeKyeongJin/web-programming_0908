@@ -25,12 +25,37 @@
             let cur = $('#disp2').val();
             let opt = $(this).val();
             if( opt != "=") {
+                //operator = opt;
                 $('#disp2').val(cur+opt);
+
             }
             else {
-                $('#disp1').val(cur);
-                $('#disp2').val(eval(cur));
+                let values = cur.split(/([+\-*\/])/);
+                let result = Number(values[0]);
+                
+                for (let i = 1; i < values.length; i += 2) {
+                    let operator = values[i];
+                    let number = Number(values[i + 1]);
+                
+                switch (operator) {
+                    case '+':
+                        result += number;
+                        break;
+                    case '-':
+                        result -= number;
+                        break;
+                    case '*':
+                        result *=number;
+                        break;
+                    case '/':
+                        result /= number;
+                        break;
+                }
+                
             }
+                $('#disp1').val(cur);
+                $('#disp2').val(result);
+        }
         });
         $('.func').click(function(){
             $('#disp1').val(null);
